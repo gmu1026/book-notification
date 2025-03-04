@@ -1,3 +1,9 @@
 spring:
   application:
     name: book-notification
+  profiles:
+    active: dev
+
+logging:
+  level:
+    root: info
