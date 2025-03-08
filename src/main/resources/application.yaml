@@ -3,6 +3,8 @@ spring:
     name: book-notification
   profiles:
     active: dev
+  jpa:
+    open-in-view: false
 
 logging:
   level:
