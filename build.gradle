@@ -11,8 +11,8 @@ sonarqube {
         property "sonar.projectKey", "gmu1026_book-notification"
         property "sonar.organization", "gmu1026-sonarcloud"
         property "sonar.host.url", "https://sonarcloud.io"
-        property "sonar.java.binaries", "build/classes/java/main"  // 컴파일된 클래스 파일 경로
-        property "sonar.java.test.binaries", "build/classes/java/test"  // 테스트 클래스 파일 경로
+        property 'sonar.java.binaries', '${buildDir}/classes' // 컴파일된 클래스 파일 경로
+        property 'sonar.test.inclusions', '**/*Test.java'  // 테스트 클래스 파일 경로
     }
 }
 
