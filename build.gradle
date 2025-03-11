@@ -3,6 +3,102 @@ plugins {
     id 'org.springframework.boot' version '3.4.3'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
+    id 'org.sonarqube' version '6.0.1.5171'
+    id 'jacoco'
+}
+
+jacoco {
+    toolVersion = '0.8.12'
+}
+
+jacocoTestReport {
+    def QDomains = []
+
+    for (qPattern in "**/QA".."**/QZ") {
+        QDomains.add(qPattern + "*")
+    }
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: [
+                            '**/dto*',
+                            '**/exception*',
+                            '**/config*',
+                            '*.Q*'
+                    ] + QDomains)
+        }))
+    }
+
+    reports {
+        html.required = true
+        xml.required = true
+        csv.required = false
+    }
+
+    finalizedBy jacocoTestCoverageVerification
+    dependsOn test
+}
+
+def includePatterns = [
+        '**/service/*',
+]
+
+def excludePatterns = [
+        '**/dto*',
+        '**/config*',
+        '*.Q*',
+        '**/exception*',
+]
+
+jacocoTestCoverageVerification {
+    violationRules {
+        failOnViolation = false
+        rule {
+            enabled = true
+            element = 'CLASS'
+
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.80
+            }
+
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 0.80
+            }
+
+            includes = includePatterns
+            excludes = excludePatterns
+        }
+
+        rule {
+            enabled = true
+            element = 'METHOD'
+
+            limit {
+                counter = 'LINE'
+                value = 'TOTALCOUNT'
+                maximum = 200
+            }
+            includes = includePatterns
+            excludes = excludePatterns
+        }
+    }
+
+    dependsOn jacocoTestReport
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "gmu1026_book-notification"
+        property "sonar.organization", "gmu1026-sonarcloud"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property 'sonar.java.coveragePlugin', 'jacoco'
+        property 'sonar.coverage.jacoco.xmlReportPaths', "${project.rootDir}/support/jacoco/build/reports/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml"
+    }
 }
 
 group = 'net.cproduction'
@@ -34,6 +130,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    testImplementation 'org.testcontainers:postgresql'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
     runtimeOnly 'org.postgresql:postgresql'

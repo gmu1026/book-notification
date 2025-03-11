@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BookNotificationApplicationTests {
+class BookNotificationApplicationTests extends AbstractIntegrationTest {
 
     @Test
     void contextLoads() {
