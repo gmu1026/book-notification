@@ -58,10 +58,6 @@ public class BookSearchServiceImpl implements BookSearchService {
         bookRepository.saveAll(books);
     }
 
-//    private List<Book> filterBooks(List<Book> books, String query, SearchCondition searchCondition) {
-//        return books.stream().filter(book -> searchCondition.matches(book, query)).toList();
-//    }
-
     @Override
     public void searchByTitle(String title) {
         BookSearchResponse response = naverBookApiClient.searchBook(title, 100, 1);
