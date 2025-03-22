@@ -28,7 +28,12 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build
-
+      - name: Debug Environment
+        run: |
+          echo "Environment variables (masked):"
+          echo "NAVER_API_CLIENT_ID is set: ${{ env.NAVER_API_CLIENT_ID != '' }}"
+          echo "NAVER_API_CLIENT_SECRET is set: ${{ env.NAVER_API_CLIENT_SECRET != '' }}"
+          echo "Current profile: test"
       - name: Run tests
         env:
           NAVER_API_CLIENT_ID: ${{ secrets.NAVER_API_CLIENT_ID }}
