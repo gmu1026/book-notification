@@ -25,15 +25,14 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-
-      - name: Build with Gradle
-        run: ./gradlew build -Dspring.profile.active=test
       - name: Debug Environment
         run: |
           echo "Environment variables (masked):"
           echo "NAVER_API_CLIENT_ID is set: ${{ env.NAVER_API_CLIENT_ID != '' }}"
           echo "NAVER_API_CLIENT_SECRET is set: ${{ env.NAVER_API_CLIENT_SECRET != '' }}"
           echo "Current profile: test"
+      - name: Build with Gradle
+        run: ./gradlew build -Dspring.profile.active=test
       - name: Run tests
         env:
           NAVER_API_CLIENT_ID: ${{ secrets.NAVER_API_CLIENT_ID }}
