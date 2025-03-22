@@ -1,8 +1,7 @@
 spring:
   application:
     name: book-notification
-  profiles:
-    active: dev
+
   jpa:
     open-in-view: false
 
