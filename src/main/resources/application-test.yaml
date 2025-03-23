@@ -1,0 +1,5 @@
+naver:
+  api:
+    client:
+      id: sample
+      secret: sample

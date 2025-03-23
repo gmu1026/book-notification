@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: book-notification
+
+  jpa:
+    open-in-view: false
+
+logging:
+  level:
+    root: info
